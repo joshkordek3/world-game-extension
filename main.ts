@@ -22,6 +22,22 @@ export function show () {
         led.plot(parseFloat(world[index].substr(0, 2)) + leftright_difference, parseFloat(world[index].substr(2, 2)) + updown_difference)
     }
 }
+//% block="x position"
+//% group="Position"
+export function x_pos () {
+    return 2 + leftright_difference
+}
+//% block="y position"
+//% group="Position"
+export function y_pos () {
+    return 2 + updown_difference
+}
+//% block="go to x: $x y: $y"
+//% group="Position"
+export function goto (x: number, y: number) {
+    updown_difference = 2 + y
+    leftright_difference = 2 + x
+}
 //% block="add by $columnrow (column/row) from $from_xy to $to_xy on $xy "
 //% group="Creating"
 export function add_by (columnrow: string, from_xy: number, to_xy: number, xy: number) {
