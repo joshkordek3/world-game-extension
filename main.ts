@@ -1,5 +1,5 @@
 //% color=#088530 weight=50 icon="\uf11b" block="Game"
-namespace game.world {
+namespace game_world {
 //% block="move $leftrightupdown left/right/up/down by $steps"
 //% group="Moving"
 export function move_by_ (leftrightupdown: string, steps: number) {
