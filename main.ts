@@ -63,12 +63,12 @@ export function all_world_blocks () {
 //% group="Creating"
 export function add_by (columnrow: string, from_xy: number, to_xy: number, xy: number) {
     if (columnrow == "column") {
-        for (let index = 0; index <= to_xy - from_xy; index++) {
-            add(xy, index + from_xy)
+        for (let index2 = 0; index2 <= to_xy - from_xy; index2++) {
+            add(xy, index2 + from_xy)
         }
     } else if (columnrow == "row") {
-        for (let index = 0; index <= to_xy - from_xy; index++) {
-            add(index + from_xy, xy)
+        for (let index3 = 0; index3 <= to_xy - from_xy; index3++) {
+            add(index3 + from_xy, xy)
         }
     }
 }
@@ -77,10 +77,10 @@ export function add_by (columnrow: string, from_xy: number, to_xy: number, xy: n
 export function add (x: number, y: number) {
     temp_txt = convertToText(x)
     temp_txt2 = convertToText(y)
-    for (let index = 0; index < 2 - temp_txt.length; index++) {
+    for (let index4 = 0; index4 < 2 - temp_txt.length; index4++) {
         temp_txt = "0" + temp_txt
     }
-    for (let index = 0; index < 2 - temp_txt2.length; index++) {
+    for (let index5 = 0; index5 < 2 - temp_txt2.length; index5++) {
         temp_txt2 = "0" + temp_txt2
     }
     world.push("" + temp_txt + temp_txt2)
