@@ -14,6 +14,29 @@ export function move (leftrightupdown: string, steps: number) {
     }
     show()
 }
+//% block="move $leftrightupdown and $leftrightupdown by $steps"
+//% group="Moving"
+export function move_ (leftrightupdown: string, leftrightupdown2: string, steps: number) {
+    if (leftrightupdown == "left") {
+        leftright_difference += steps
+    } else if (leftrightupdown == "right") {
+        leftright_difference += 0 - steps
+    } else if (leftrightupdown == "up") {
+        updown_difference += steps
+    } else if (leftrightupdown == "down") {
+        updown_difference += 0 - steps
+    }
+        if (leftrightupdown2 == "left") {
+        leftright_difference += steps
+    } else if (leftrightupdown2 == "right") {
+        leftright_difference += 0 - steps
+    } else if (leftrightupdown2 == "up") {
+        updown_difference += steps
+    } else if (leftrightupdown2 == "down") {
+        updown_difference += 0 - steps
+    }
+    show()
+}
 //% block="update the display of the world"
 //% group="Diplaying"
 export function show () {
