@@ -1,5 +1,5 @@
 //% color=#088530 weight=50 icon="\uf11b" block="Game"
-namespace world {
+namespace World {
 //% block="move $leftrightupdown left/right/up/down by $steps"
 //% group="Moving"
 export function move (leftrightupdown: string, steps: number) {
@@ -39,7 +39,7 @@ export function goto (x: number, y: number) {
     leftright_difference = 2 - x
     show()
 }
-//% block="blocks in the world"
+//% block="number of blocks in the world"
 //% group="Position"
 export function world_blocks_detect () {
     return world.length
