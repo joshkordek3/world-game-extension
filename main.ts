@@ -1,4 +1,4 @@
-//% color=#088530 weight=50 icon="\uf11b" block="Game"
+//% color=#088530 weight=50 icon="\uf11b" block="World"
 namespace World {
 //% block="move $leftrightupdown left/right/up/down by $steps"
 //% group="Moving"
@@ -44,13 +44,26 @@ export function goto (x: number, y: number) {
 export function world_blocks_detect () {
     return world.length
 }
+//% block="is there a block at x: $x_pos y: y_pos"
+//% group="Detect"
+export function block_detect (x_pos: number, y_pos: number) {
+    temp_txt = convertToText(x_pos)
+    temp_txt2 = convertToText(y_pos)
+    for (let index6 = 0; index6 < 2 - temp_txt.length; index6++) {
+        temp_txt = "0" + temp_txt
+    }
+    for (let index7 = 0; index7 < 2 - temp_txt2.length; index7++) {
+        temp_txt2 = "0" + temp_txt2
+    }
+    return world.indexOf("" + temp_txt + temp_txt2) != -1
+}
 //% block="world $xy (x/y) coordinate at item $place (min=1)"
 //% group="Position"
 export function world_blocks (xy: string, place: number) {
     if (xy = "x") {
-        return parseFloat(world[place - 1 ].substr(2, 2))
+        return parseFloat(world[place - 1 ].substr(0, 2))
     } else if (xy = "y") {
-        return parseFloat(world[place - 1].substr(0, 2)) 
+        return parseFloat(world[place - 1].substr(2, 2)) 
     }
     return 0
 }
@@ -88,6 +101,7 @@ export function add (x: number, y: number) {
 let temp_txt2 = ""
 let temp_txt = ""
 let world: string[] = []
+//let world2: boolean[][] = [[]];
 let updown_difference = 0
 let leftright_difference = 0
 }
