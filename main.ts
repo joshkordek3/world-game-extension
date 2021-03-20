@@ -39,7 +39,27 @@ export function goto (x: number, y: number) {
     leftright_difference = 2 - x
     show()
 }
-//% block="add by $columnrow (column/row) from $from_xy to $to_xy on $xy "
+//% block="blocks in the world"
+//% group="Position"
+export function world_blocks_detect () {
+    return world.length
+}
+//% block="world $xy (x/y) coordinate at item $place (min=1)"
+//% group="Position"
+export function world_blocks (xy: string, place: number) {
+    if (xy = "x") {
+        return parseFloat(world[place - 1 ].substr(2, 2))
+    } else if (xy = "y") {
+        return parseFloat(world[place - 1].substr(0, 2)) 
+    }
+    return 0
+}
+//% block="world (array)"
+//% group="Position"
+export function all_world_blocks () {
+    return world
+}
+//% block="add by $columnrow (column/row) from $from_xy to $to_xy on $xy"
 //% group="Creating"
 export function add_by (columnrow: string, from_xy: number, to_xy: number, xy: number) {
     if (columnrow == "column") {
