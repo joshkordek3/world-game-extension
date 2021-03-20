@@ -25,18 +25,19 @@ export function show () {
 //% block="x position"
 //% group="Position"
 export function x_pos () {
-    return 2 + leftright_difference
+    return 2 - leftright_difference
 }
 //% block="y position"
 //% group="Position"
 export function y_pos () {
-    return 2 + updown_difference
+    return 2 - updown_difference
 }
 //% block="go to x: $x y: $y"
 //% group="Position"
 export function goto (x: number, y: number) {
-    updown_difference = 2 + y
-    leftright_difference = 2 + x
+    updown_difference = 2 - y
+    leftright_difference = 2 - x
+    show()
 }
 //% block="add by $columnrow (column/row) from $from_xy to $to_xy on $xy "
 //% group="Creating"
