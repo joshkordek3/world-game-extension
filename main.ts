@@ -2,8 +2,6 @@
 namespace World {
 //% block="move $leftrightupdown left/right/up/down by $steps"
 //% group="Moving"
-//% leftrightupdown.fieldEditor="numberdropdown" leftrightupdown.fieldOptions.decompileLiterals=true
-//% leftrightupdown.fieldOptions.data='[["Left", "L"], ["Right", "R"], ["Up", "U"], ["Down", "D"]]'
 export function move (leftrightupdown: string, steps: number) {
     if (leftrightupdown == "left") {
         leftright_difference += steps
@@ -16,7 +14,7 @@ export function move (leftrightupdown: string, steps: number) {
     }
     show()
 }
-//% block="move $leftrightupdown and $leftrightupdown by $steps"
+//% block="move $leftrightupdown and $leftrightupdown2 by $steps"
 //% group="Moving"
 export function move_ (leftrightupdown: string, leftrightupdown2: string, steps: number) {
     move(leftrightupdown, steps)
