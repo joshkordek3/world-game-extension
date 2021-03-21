@@ -53,7 +53,7 @@ export function goto (x: number, y: number) {
 export function world_blocks_detect () {
     return world.length
 }
-//% block="is there a block at x: $x_pos y: y_pos"
+//% block="is there a block at x: $x_pos y: $y_pos"
 //% group="Detect"
 export function block_detect (x_pos: number, y_pos: number) {
     temp_txt = convertToText(x_pos)
