@@ -1,5 +1,45 @@
-
-> Open this page at [https://joshkordek3.github.io/world-game-extension/](https://joshkordek3.github.io/world-game-extension/)
+## Example Game
+(note: this is not literal code, this will just be an example)
+```
+on start {
+    World.add_by("row", 1, -9, 99)
+    World.show()
+    let gravity_effect = 100
+}
+forever {
+    if button a+b pressed {
+        if not world detects block on x_pos, y_pos-1 {
+            repeat 2 {
+                World.move("up", 1)
+                pause 50 (ms)
+            }
+        }
+    } elif button b pressed {
+        if not world detects block on x_pos+1, y_pos {
+            World.move("right", 1)
+        }
+    } elif button a pressed {
+        if not world detects block on x_pos-1, y_pos {
+        World.move("left", 1)
+        }
+    }
+    if button a pressed or button b pressed or button a+b pressed {
+        pause 200 (ms)
+    }
+}
+forever2 {
+    gravity()
+}
+function gravity () {
+    for index from 0 to 1e+300 {
+        if world detects block on x_pos, y_pos+1 {
+            break
+        }
+        World.move("down", 1)
+        pause 0-(gravity_effect*(index+1)) (ms)
+    }
+}
+```
 
 ## Use as Extension
 
