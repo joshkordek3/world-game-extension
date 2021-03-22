@@ -24,10 +24,9 @@ forever {
         }
     }
     if button a pressed or button b pressed or button a+b pressed {
+        led.plot(2, 2)
         pause 200 (ms)
     }
-}
-forever2 {
     gravity()
 }
 function gravity () {
@@ -36,7 +35,7 @@ function gravity () {
             break
         }
         World.move("down", 1)
-        pause 0-(gravity_effect*(index+1)) (ms)
+        pause 200-(gravity_effect*(index+1)) (ms)
     }
 }
 ```
