@@ -1,5 +1,5 @@
 ## Example Game
-(note: this is not literal code, this will just be an example)
+(note: this part is not literal code, literal code is below)
 ```
 on start {
     World.add_by("row", 1, -9, 99)
@@ -8,10 +8,12 @@ on start {
 }
 forever {
     if button a+b pressed {
-        if not world detects block on x_pos, y_pos-1 {
+        if world detects block on x_pos, y_pos+1 {
             repeat 2 {
-                World.move("up", 1)
-                pause 50 (ms)
+                if not world detects block on x_pos, y_pos-1 {
+                    World.move("up", 1)
+                    pause 50 (ms)
+                }
             }
         }
     } elif button b pressed {
@@ -39,7 +41,69 @@ function gravity () {
     }
 }
 ```
-
+literal code:
+```
+let gravity_effect = 100
+World.add_by(
+"row",
+-2,
+2,
+2
+)
+World.add_by(
+"column",
+-2,
+2,
+-2
+)
+World.add_by(
+"column",
+-2,
+2,
+2
+)
+World.add_by(
+"row",
+-2,
+2,
+-2
+)
+World.show()
+basic.forever(function () {
+    if (input.buttonIsPressed(Button.AB)) {
+        if (World.block_detect(World.x_pos(), World.y_pos() + 1)) {
+            for (let index = 0; index < 2; index++) {
+                if (!(World.block_detect(World.x_pos(), World.y_pos() - 1))) {
+                    World.move("up", 1)
+                }
+                led.plot(2, 2)
+                basic.pause(100)
+            }
+            basic.pause(100)
+        }
+    } else if (!(input.buttonIsPressed(Button.A)) && (input.buttonIsPressed(Button.B) && !(input.buttonIsPressed(Button.AB)))) {
+        if (!(World.block_detect(World.x_pos() + 1, World.y_pos()))) {
+            World.move("right", 1)
+        }
+        led.plot(2, 2)
+        basic.pause(200)
+    } else if (input.buttonIsPressed(Button.A) && !(input.buttonIsPressed(Button.B) || input.buttonIsPressed(Button.AB))) {
+        if (!(World.block_detect(World.x_pos() - 1, World.y_pos()))) {
+            World.move("left", 1)
+        }
+        led.plot(2, 2)
+        basic.pause(200)
+    }
+})
+basic.forever(function () {
+    if (!(World.block_detect(World.x_pos(), World.y_pos() + 1))) {
+        World.move("down", 1)
+        led.plot(2, 2)
+        basic.pause(10000-Math.map(gravity_effect, 0, 100, 0, 10000))
+    }
+})
+})
+```
 ## Use as Extension
 
 This repository can be added as an **extension** in MakeCode.
