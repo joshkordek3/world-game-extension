@@ -70,18 +70,7 @@ World.add_by(
 )
 World.show()
 basic.forever(function () {
-    if (input.buttonIsPressed(Button.AB)) {
-        if (World.block_detect(World.x_pos(), World.y_pos() + 1)) {
-            for (let index = 0; index < 2; index++) {
-                if (!(World.block_detect(World.x_pos(), World.y_pos() - 1))) {
-                    World.move("up", 1)
-                }
-                led.plot(2, 2)
-                basic.pause(100)
-            }
-            basic.pause(100)
-        }
-    } else if (!(input.buttonIsPressed(Button.A)) && (input.buttonIsPressed(Button.B) && !(input.buttonIsPressed(Button.AB)))) {
+    if (!(input.buttonIsPressed(Button.A)) && (input.buttonIsPressed(Button.B) && !(input.buttonIsPressed(Button.AB)))) {
         if (!(World.block_detect(World.x_pos() + 1, World.y_pos()))) {
             World.move("right", 1)
         }
@@ -96,12 +85,23 @@ basic.forever(function () {
     }
 })
 basic.forever(function () {
+    if (input.buttonIsPressed(Button.AB)) {
+        if (World.block_detect(World.x_pos(), World.y_pos() + 1)) {
+            for (let index = 0; index < 2; index++) {
+                if (!(World.block_detect(World.x_pos(), World.y_pos() - 1))) {
+                    World.move("up", 1)
+                }
+                led.plot(2, 2)
+                basic.pause(100)
+            }
+            basic.pause(100)
+        }
+    } 
     if (!(World.block_detect(World.x_pos(), World.y_pos() + 1))) {
         World.move("down", 1)
         led.plot(2, 2)
         basic.pause(10000-Math.map(gravity_effect, 0, 100, 0, 10000))
     }
-})
 })
 ```
 ## Use as Extension
