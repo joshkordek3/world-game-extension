@@ -1,16 +1,36 @@
+enum LeftRightUpDown {
+//% block="Left"
+Left,
+
+//% block="Right"
+Right,
+
+//% block="Up"
+Up,
+
+//% block="Down"
+Down,
+}
+enum ColumnRow {
+//% block="Column"
+Column,
+
+//% block="Row"
+Row,
+}
 //% color=#088530 weight=50 icon="\uf11b" block="World"
 namespace World {
 //% block="move $leftrightupdown left/right/up/down by $steps"
 //% group="Moving"
 //% steps.min=0 steps.max=108
-export function move (leftrightupdown: string, steps: number) {
-    if (leftrightupdown == "left") {
+export function move (leftrightupdown: LeftRightUpDown, steps: number) {
+    if (leftrightupdown = 1) {
         leftright_difference += steps
-    } else if (leftrightupdown == "right") {
+    } else if (leftrightupdown = 2) {
         leftright_difference += 0 - steps
-    } else if (leftrightupdown == "up") {
+    } else if (leftrightupdown = 3) {
         updown_difference += steps
-    } else if (leftrightupdown == "down") {
+    } else if (leftrightupdown = 4) {
         updown_difference += 0 - steps
     }
     show()
@@ -18,7 +38,7 @@ export function move (leftrightupdown: string, steps: number) {
 //% block="move $leftrightupdown and $leftrightupdown2 by $steps"
 //% group="Moving"
 //% steps.min=0 steps.max=108
-export function move_ (leftrightupdown: string, leftrightupdown2: string, steps: number) {
+export function move_ (leftrightupdown: LeftRightUpDown, leftrightupdown2: LeftRightUpDown, steps: number) {
     move(leftrightupdown, steps)
     move(leftrightupdown2, steps)
     show()
@@ -54,6 +74,13 @@ export function spawnpoint () {
 export function spawnpoint_at_pos (x: number, y: number) {
     spawn_x = x
     spawn_y = y
+}
+// block="add $details via $xy (x/y), at $at_xy(led display style)"
+// group="Creating"
+export function add_advanced (xy: string, at_xy: number, details: String) {
+    for(let i = -9; i < 100; i++) {
+        
+    }
 }
 //% block="go to spawnpoint"
 //% group="Position"
@@ -110,12 +137,12 @@ export function all_world_blocks () {
 //% xy.min=-9 xy.max=99
 //% from_xy.min=-9 from_xy.max=99
 //% to_xy.min=-9 to_xy.max=99
-export function add_by (columnrow: string, from_xy: number, to_xy: number, xy: number) {
-    if (columnrow == "column") {
+export function add_by (columnrow: ColumnRow, from_xy: number, to_xy: number, xy: number) {
+    if (columnrow = 1) {
         for (let index2 = 0; index2 <= to_xy - from_xy; index2++) {
             add(xy, index2 + from_xy)
         }
-    } else if (columnrow == "row") {
+    } else if (columnrow = 2) {
         for (let index3 = 0; index3 <= to_xy - from_xy; index3++) {
             add(index3 + from_xy, xy)
         }
