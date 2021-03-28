@@ -12,6 +12,20 @@ Up,
 //% block="Down"
 Down,
 }
+enum UpDown {
+//% block="Up"
+Up,
+
+//% block="Down"
+Down,
+}
+enum LeftRight {
+//% block="Left"
+Left,
+
+//% block="Right"
+Right,
+}
 enum ColumnRow {
 //% block="Column"
 Column,
@@ -28,7 +42,7 @@ Y,
 }
 //% color=#088530 weight=50 icon="\uf11b" block="World"
 namespace World {
-//% block="move $leftrightupdown left/right/up/down by $steps"
+//% block="move $leftrightupdown by $steps"
 //% group="Moving"
 //% steps.min=0 steps.max=108
 /** 
@@ -49,9 +63,18 @@ export function move (leftrightupdown: LeftRightUpDown, steps: number) {
 //% block="move $leftrightupdown and $leftrightupdown2 by $steps"
 //% group="Moving"
 //% steps.min=0 steps.max=108
-export function move_ (leftrightupdown: LeftRightUpDown, leftrightupdown2: LeftRightUpDown, steps: number) {
-    move(leftrightupdown, steps)
-    move(leftrightupdown2, steps)
+export function move_ (leftright: LeftRight, updown: UpDown, steps: number) {
+    if (leftright = 1) {
+        leftright_difference += steps
+    } else if (leftright = 2) {
+        leftright_difference += 0 - steps
+    } 
+    if (updown = 1) {
+        updown_difference += steps
+    } else if (updown = 2) {
+        updown_difference += 0 - steps
+    }
+    show()
 }
 //% block="update the display of the world"
 //% group="Diplaying"
@@ -64,7 +87,7 @@ export function show () {
         led.plot(parseFloat(world[index].substr(0, 2)) + leftright_difference, parseFloat(world[index].substr(2, 2)) + updown_difference)
     }
 }
-//% block="x position"
+//% block="$xy position"
 //% group="Position"
 /**
  * gives you the x or y position you are at according to what you see
@@ -78,7 +101,7 @@ export function xy_pos (xy: XY) {
     return 0
 }
 //% block="spawnpoint myself at the current position"
-//% group="Position"
+//% group="Spawnpoint"
 /**
  * sets your spawn point to the position you are at
 */
@@ -87,7 +110,7 @@ export function spawnpoint () {
     spawn_y = xy_pos(2)
 }
 //% block="set spawnpoint to x: $x y: $y"
-//% group="Position"
+//% group="Spawnpoint"
 //% x.min=-9 x.max=99
 //% y.min=-9 y.max=99
 /**
@@ -197,13 +220,13 @@ export function block_detect (x_pos: number, y_pos: number) {
 //% group="Position"
 //% place.min=1 place.max=11881
 /**
- * gives you the x or y of an item (min=1) in the array
+ * gives you the x or y of an item  in the array
 */
 export function world_blocks (xy: XY, place: number) {
     if (xy = 1) {
-        return parseFloat(world[place - 1].substr(0, 2))
+        return parseFloat(world[place].substr(0, 2))
     } else if (xy = 2) {
-        return parseFloat(world[place - 1].substr(2, 2)) 
+        return parseFloat(world[place].substr(2, 2)) 
     }  
     return -13
 }
@@ -224,11 +247,11 @@ export function all_world_blocks () {
  * self-explanatory
 */
 export function destroy_by (columnrow: ColumnRow, from_xy: number, to_xy: number, xy: number) {
-    if (columnrow = 1) {
+    if (columnrow == 1) {
         for (let index2 = from_xy; index2 <= to_xy; index2++) {
             destroy(xy, index2)
         }
-    } else if (columnrow = 2) {
+    } else if (columnrow == 2) {
         for (let index3 = from_xy; index3 <= to_xy; index3++) {
             destroy(index3, xy)
         }
@@ -239,6 +262,7 @@ export function destroy_by (columnrow: ColumnRow, from_xy: number, to_xy: number
 //% xy.min=-9 xy.max=99
 //% from_xy.min=-9 from_xy.max=99
 //% to_xy.min=-9 to_xy.max=99
+//% inlineInputMode=inline
 /**
  * self-explanatory
 */
