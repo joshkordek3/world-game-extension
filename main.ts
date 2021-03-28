@@ -18,6 +18,13 @@ Column,
 //% block="Row"
 Row,
 }
+enum XY {
+//% block="X"
+X,
+
+//% block="Y"
+Y,
+}
 //% color=#088530 weight=50 icon="\uf11b" block="World"
 namespace World {
 //% block="move $leftrightupdown left/right/up/down by $steps"
@@ -75,12 +82,51 @@ export function spawnpoint_at_pos (x: number, y: number) {
     spawn_x = x
     spawn_y = y
 }
-// block="add $details via $xy (x/y), at $at_xy(led display style)"
-// group="Creating"
-export function add_advanced (xy: string, at_xy: number, details: String) {
-    for(let i = -9; i < 100; i++) {
-        
+//% block="Destroy all blocks"
+//% group="Creating&Destroying"
+export function destroy_all() {
+    for(let i = 0; i < world.length; i++) {
+        world.pop()
     }
+}
+//% block="add $details via $xy, at $at_xy"
+//% group="Creating & Destroying"
+//% details.defl="0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+export function add_advanced (xy: XY, at_xy: number, details: string) {
+    for(let i = 0; i < 109 - details.length; i++) {
+        details = details + "0"
+    }
+    for(let i2 = 0; i2 < world.length; i2++) {
+        if (world_blocks(xy, i2) == at_xy) {
+            world.removeAt(i2)
+            i2--
+        }
+    }
+    for(let i3 = -9; i3 < 100; i3++) {
+        if (parseFloat(details.charAt(i3 + 9)) == 1) {
+            if (xy = 1) {
+                add(i3, at_xy)
+            } else if (xy = 2)  {
+                add(at_xy, i3)
+            }
+        }
+    }
+}
+//% block="destroy block at x: $x y: $y"
+//% group="Creating & Destroying"
+//% x.min=-9 x.max=99
+//% y.min=-9 y.max=99
+export function destroy (x: number, y: number) {
+    if (block_detect(parseFloat(encode(x)), parseFloat(encode(y)))) {
+        world.removeAt(find(x, y))
+    }
+}
+//% block="which block is the block at x: $x y: $y"
+//% group="Position"
+//% x.min=-9 x.max=99
+//% y.min=-9 y.max=99
+export function find (x: number, y: number) {
+    return world.indexOf("" + encode(x) + encode(y))
 }
 //% block="go to spawnpoint"
 //% group="Position"
@@ -106,64 +152,72 @@ export function world_blocks_detect () {
 //% x_pos.min=-9 x_pos.max=99
 //% y_pos.min=-9 y_pos.max=99
 export function block_detect (x_pos: number, y_pos: number) {
-    temp_txt = convertToText(x_pos)
-    temp_txt2 = convertToText(y_pos)
-    for (let index6 = 0; index6 < 2 - temp_txt.length; index6++) {
-        temp_txt = "0" + temp_txt
-    }
-    for (let index7 = 0; index7 < 2 - temp_txt2.length; index7++) {
-        temp_txt2 = "0" + temp_txt2
-    }
-    return world.indexOf("" + temp_txt + temp_txt2) != -1
+    return find(x_pos, y_pos) != -1
 }
-//% block="world $xy (x/y) coordinate at item $place (min=1)"
+//% block="world $xy coordinate at item $place (min=1)"
 //% group="Position"
-//% place.min=1 place.max=11664
-export function world_blocks (xy: string, place: number) {
-    if (xy = "x") {
-        return parseFloat(world[place - 1 ].substr(0, 2))
-    } else if (xy = "y") {
+//% place.min=1 place.max=11881
+export function world_blocks (xy: XY, place: number) {
+    if (xy = 1) {
+        return parseFloat(world[place - 1].substr(0, 2))
+    } else if (xy = 2) {
         return parseFloat(world[place - 1].substr(2, 2)) 
-    }
-    return -10
+    }  
+    return -13
 }
 //% block="world (array)"
 //% group="Position"
 export function all_world_blocks () {
     return world
 }
-//% block="add by $columnrow (column/row) at $xy from $from_xy to $to_xy "
-//% group="Creating"
+//% block="destroy by $columnrow at $xy from $from_xy to $to_xy "
+//% group="Creating & Destroying"
+//% xy.min=-9 xy.max=99
+//% from_xy.min=-9 from_xy.max=99
+//% to_xy.min=-9 to_xy.max=99
+export function destroy_by (columnrow: ColumnRow, from_xy: number, to_xy: number, xy: number) {
+    if (columnrow = 1) {
+        for (let index2 = from_xy; index2 <= to_xy; index2++) {
+            destroy(xy, index2)
+        }
+    } else if (columnrow = 2) {
+        for (let index3 = from_xy; index3 <= to_xy; index3++) {
+            destroy(index3, xy)
+        }
+    }
+}
+//% block="add by $columnrow at $xy from $from_xy to $to_xy "
+//% group="Creating & Destroying"
 //% xy.min=-9 xy.max=99
 //% from_xy.min=-9 from_xy.max=99
 //% to_xy.min=-9 to_xy.max=99
 export function add_by (columnrow: ColumnRow, from_xy: number, to_xy: number, xy: number) {
     if (columnrow = 1) {
-        for (let index2 = 0; index2 <= to_xy - from_xy; index2++) {
-            add(xy, index2 + from_xy)
+        for (let index2 = from_xy; index2 <= to_xy; index2++) {
+            add(xy, index2)
         }
     } else if (columnrow = 2) {
-        for (let index3 = 0; index3 <= to_xy - from_xy; index3++) {
-            add(index3 + from_xy, xy)
+        for (let index3 = from_xy; index3 <= to_xy; index3++) {
+            add(index3, xy)
         }
     }
 }
 //% block="add x $x and y $y to the world"
-//% group="Creating"
+//% group="Creating & Destroying"
 //% x.min=-9 x.max=99
 //% y.min=-9 y.max=99
 export function add (x: number, y: number) {
-    temp_txt = convertToText(x)
-    temp_txt2 = convertToText(y)
+    if (!(block_detect(parseFloat(encode(x)), parseFloat(encode(y))))) {
+        world.push("" + encode(x) + encode(y))
+    }
+}
+function encode (oof: number) {
+    temp_txt = convertToText(oof)
     for (let index4 = 0; index4 < 2 - temp_txt.length; index4++) {
         temp_txt = "0" + temp_txt
     }
-    for (let index5 = 0; index5 < 2 - temp_txt2.length; index5++) {
-        temp_txt2 = "0" + temp_txt2
-    }
-    world.push("" + temp_txt + temp_txt2)
+    return temp_txt
 }
-let temp_txt2 = ""
 let temp_txt = ""
 let world: string[] = []
 //let world2: boolean[][] = [[]];
