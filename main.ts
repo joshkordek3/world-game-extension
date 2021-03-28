@@ -60,7 +60,7 @@ export function move (leftrightupdown: LeftRightUpDown, steps: number) {
     }
     show()
 }
-//% block="move $leftrightupdown and $leftrightupdown2 by $steps"
+//% block="move $leftright and $updown by $steps"
 //% group="Moving"
 //% steps.min=0 steps.max=108
 export function move_ (leftright: LeftRight, updown: UpDown, steps: number) {
