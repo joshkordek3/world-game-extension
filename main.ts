@@ -243,6 +243,7 @@ export function all_world_blocks () {
 //% xy.min=-9 xy.max=99
 //% from_xy.min=-9 from_xy.max=99
 //% to_xy.min=-9 to_xy.max=99
+//% inlineInputMode=inline
 /**
  * self-explanatory
 */
