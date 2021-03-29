@@ -50,13 +50,21 @@ namespace World {
 */
 export function move (leftrightupdown: LeftRightUpDown, steps: number) {
     if (leftrightupdown == LeftRightUpDown.Left) {
-        leftright_difference += steps
+        if (not(xy_pos(XY.X) - steps < edge_o_world[0])) {
+            leftright_difference += steps
+        }
     } else if (leftrightupdown == LeftRightUpDown.Right) {
-        leftright_difference += 0 - steps
+        if (not(xy_pos(XY.X) + steps > edge_o_world[1])) {
+            leftright_difference += 0 - steps
+        }
     } else if (leftrightupdown == LeftRightUpDown.Up) {
-        updown_difference += steps
+        if (not(xy_pos(XY.Y) + steps > edge_o_world[3])) {
+            updown_difference += steps
+        }
     } else if (leftrightupdown == LeftRightUpDown.Down) {
-        updown_difference += 0 - steps
+        if (not(xy_pos(XY.Y) - steps < edge_o_world[2])) {
+            updown_difference += 0 - steps
+        }
     }
     show()
 }
@@ -66,6 +74,9 @@ export function move (leftrightupdown: LeftRightUpDown, steps: number) {
 /** 
  * self-explanatory
 */
+function not (bool: boolean) {
+    return (!(bool))
+}
 export function move_diagonally (leftright: LeftRight, updown: UpDown, steps: number) {
     if (leftright == LeftRight.Left) {
         leftright_difference += steps
@@ -79,15 +90,15 @@ export function move_diagonally (leftright: LeftRight, updown: UpDown, steps: nu
     }
     show()
 }
-//% block="update the display of the world"
+//% block="draw the world"
 //% group="Diplaying"
 /**
  * updates the display of the world so that it moves appropriately
 */
 export function show () {
     basic.clearScreen()
-    for (let index = 0; index <= world.length - 1; index++) {
-        led.plot(parseFloat(world[index].substr(0, 2)) + leftright_difference, parseFloat(world[index].substr(2, 2)) + updown_difference)
+    for (let index = 0; index < world.length; index++) {
+        led.plot(world_blocks(XY.X, index) + leftright_difference, world_blocks(XY.Y, index) + updown_difference)
     }
 }
 //% block="$xy position"
@@ -135,7 +146,7 @@ export function destroy_all() {
 }
 //% block="add $details via $xy, at $at_xy"
 //% group="Creating & Destroying"
-//% details.defl="0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+//% details.defl="0000000000"
 /**
  * adds stuff led display style (post in issues on github if you do not understand)
 */
@@ -171,7 +182,7 @@ export function destroy (x: number, y: number) {
         world.removeAt(find(x, y))
     }
 }
-//% block="which block is the block at x: $x y: $y"
+//% block="which block is at x: $x y: $y"
 //% group="Position"
 //% x.min=-9 x.max=99
 //% y.min=-9 y.max=99
@@ -223,7 +234,7 @@ export function block_detect (x_pos: number, y_pos: number) {
 //% group="Position"
 //% place.min=1 place.max=11881
 /**
- * gives you the x or y of an item  in the array
+ * gives you the x or y of an item in the array
 */
 export function world_blocks (xy: XY, place: number) {
     if (xy == XY.X) {
@@ -232,6 +243,15 @@ export function world_blocks (xy: XY, place: number) {
         return parseFloat(world[place].substr(2, 2)) 
     }  
     return -13
+}
+//% block="set edge of the world to minimum x: $min_x minimum y: $min_y maximum x: $max_x maximum y: $max_y"
+//% group="Position"
+//% inlineInputMode=inline
+/**
+ * sets the edge of the world to points
+*/
+export function edge (min_x: number, min_y: number, max_x: number, max_y: number) {
+    edge_o_world = [min_x, max_x, min_y, max_y]
 }
 //% block="world (array)"
 //% group="Position"
@@ -289,7 +309,7 @@ export function add_by (columnrow: ColumnRow, from_xy: number, to_xy: number, xy
  * self-explanatory
 */
 export function add (x: number, y: number) {
-    if (!(block_detect(parseFloat(encode(x)), parseFloat(encode(y))))) {
+    if (not(block_detect(parseFloat(encode(x)), parseFloat(encode(y))))) {
         world.push("" + encode(x) + encode(y))
     }
 }
@@ -307,5 +327,6 @@ let updown_difference = 0
 let leftright_difference = 0
 let spawn_x = 0
 let spawn_y = 0
+let edge_o_world: number[] = []
 goto(spawn_x, spawn_y)
 }
