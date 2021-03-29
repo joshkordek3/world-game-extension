@@ -120,7 +120,7 @@ basic.forever(function () {
             World.move(LeftRightUpDown.Down, 1)
             led.plot(2, 2)
             basic.pause(100)
-            if (World.xy_pos(XY.Y) > 9999999) {
+            if (World.xy_pos(XY.Y) > 2) {
                 World.spawn()
                 break
             }
