@@ -49,13 +49,13 @@ namespace World {
  * moves what blocks you see in the direction you pick
 */
 export function move (leftrightupdown: LeftRightUpDown, steps: number) {
-    if (leftrightupdown = 1) {
+    if (leftrightupdown == LeftRightUpDown.Left) {
         leftright_difference += steps
-    } else if (leftrightupdown = 2) {
+    } else if (leftrightupdown == LeftRightUpDown.Right) {
         leftright_difference += 0 - steps
-    } else if (leftrightupdown = 3) {
+    } else if (leftrightupdown == LeftRightUpDown.Up) {
         updown_difference += steps
-    } else if (leftrightupdown = 4) {
+    } else if (leftrightupdown == LeftRightUpDown.Down) {
         updown_difference += 0 - steps
     }
     show()
@@ -67,14 +67,14 @@ export function move (leftrightupdown: LeftRightUpDown, steps: number) {
  * self-explanatory
 */
 export function move_diagonally (leftright: LeftRight, updown: UpDown, steps: number) {
-    if (leftright = 1) {
+    if (leftright == LeftRight.Left) {
         leftright_difference += steps
-    } else if (leftright = 2) {
+    } else if (leftright == LeftRight.Right) {
         leftright_difference += 0 - steps
     } 
-    if (updown = 1) {
+    if (updown == UpDown.Up) {
         updown_difference += steps
-    } else if (updown = 2) {
+    } else if (updown == UpDown.Down) {
         updown_difference += 0 - steps
     }
     show()
@@ -96,9 +96,9 @@ export function show () {
  * gives you the x or y position you are at according to what you see
 */
 export function xy_pos (xy: XY) {
-    if (xy = 1) {
+    if (xy == XY.X) {
         return 2 - leftright_difference
-    } else if (xy = 2) {
+    } else if (xy == XY.Y) {
         return 2 - updown_difference
     }
     return 0
@@ -151,9 +151,9 @@ export function add_advanced (xy: XY, at_xy: number, details: string) {
     }
     for(let i3 = -9; i3 < 100; i3++) {
         if (parseFloat(details.charAt(i3 + 9)) == 1) {
-            if (xy = 1) {
+            if (xy == XY.X) {
                 add(i3, at_xy)
-            } else if (xy = 2)  {
+            } else if (xy == XY.Y)  {
                 add(at_xy, i3)
             }
         }
@@ -226,9 +226,9 @@ export function block_detect (x_pos: number, y_pos: number) {
  * gives you the x or y of an item  in the array
 */
 export function world_blocks (xy: XY, place: number) {
-    if (xy = 1) {
+    if (xy == XY.X) {
         return parseFloat(world[place].substr(0, 2))
-    } else if (xy = 2) {
+    } else if (xy = XY.Y) {
         return parseFloat(world[place].substr(2, 2)) 
     }  
     return -13
@@ -251,11 +251,11 @@ export function all_world_blocks () {
  * self-explanatory
 */
 export function destroy_by (columnrow: ColumnRow, from_xy: number, to_xy: number, xy: number) {
-    if (columnrow == 1) {
+    if (columnrow == ColumnRow.Column) {
         for (let index2 = from_xy; index2 <= to_xy; index2++) {
             destroy(xy, index2)
         }
-    } else if (columnrow == 2) {
+    } else if (columnrow == ColumnRow.Row) {
         for (let index3 = from_xy; index3 <= to_xy; index3++) {
             destroy(index3, xy)
         }
@@ -271,11 +271,11 @@ export function destroy_by (columnrow: ColumnRow, from_xy: number, to_xy: number
  * self-explanatory
 */
 export function add_by (columnrow: ColumnRow, from_xy: number, to_xy: number, xy: number) {
-    if (columnrow = 1) {
+    if (columnrow == ColumnRow.Column) {
         for (let index2 = from_xy; index2 <= to_xy; index2++) {
             add(xy, index2)
         }
-    } else if (columnrow = 2) {
+    } else if (columnrow == ColumnRow.Row) {
         for (let index3 = from_xy; index3 <= to_xy; index3++) {
             add(index3, xy)
         }
