@@ -48,6 +48,12 @@ namespace World {
  * moves what blocks you see in the direction you pick
 */
 export function move (leftrightupdown: LeftRightUpDown, steps: number) {
+    for(let i = 0; i < steps; i++) {
+        move_(leftrightupdown, 1)
+    }
+    show()
+}
+function move_ (leftrightupdown: LeftRightUpDown, steps: number) {
     if (leftrightupdown == LeftRightUpDown.Left) {
         if (not(xy_pos(XY.X) - steps < edge_o_world[0])) {
             leftright_difference += steps
@@ -65,7 +71,9 @@ export function move (leftrightupdown: LeftRightUpDown, steps: number) {
             updown_difference += 0 - steps
         }
     }
-    show()
+}
+function not (bool: boolean) {
+    return (!(bool))
 }
 //% block="move %leftright and %updown by $steps"
 //% group="Moving"
@@ -73,10 +81,13 @@ export function move (leftrightupdown: LeftRightUpDown, steps: number) {
 /** 
  * self-explanatory
 */
-function not (bool: boolean) {
-    return (!(bool))
-}
 export function move_diagonally (leftright: LeftRight, updown: UpDown, steps: number) {
+    for(let i = 0; i < steps; i++) {
+        move__diagonally(leftright, updown, 1)
+    }
+    show()
+}
+function move__diagonally (leftright: LeftRight, updown: UpDown, steps: number) {
     if (leftright == LeftRight.Left) {
         if (not(xy_pos(XY.X) - steps < edge_o_world[0])) {
             leftright_difference += steps
@@ -95,7 +106,6 @@ export function move_diagonally (leftright: LeftRight, updown: UpDown, steps: nu
             updown_difference += 0 - steps
         }
     }
-    show()
 }
 //% block="draw the world"
 //% group="Diplaying"
@@ -334,6 +344,6 @@ let updown_difference = 0
 let leftright_difference = 0
 let spawn_x = 0
 let spawn_y = 0
-let edge_o_world: number[] = []
+let edge_o_world: number[] = [-9, 99, -9, 99]
 goto(spawn_x, spawn_y)
 }
