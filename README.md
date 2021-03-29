@@ -44,63 +44,87 @@ function gravity () {
 literal code:
 ```
 let gravity_effect = 100
+let speed = 100
+let jump = 100
 World.add_by(
-"row",
--2,
+ColumnRow.Row,
 2,
+-2,
 2
 )
 World.add_by(
-"column",
+ColumnRow.Column,
 -2,
 2,
 -2
 )
 World.add_by(
-"column",
--2,
+ColumnRow.Column,
 2,
-2
-)
-World.add_by(
-"row",
--2,
 2,
 -2
+)
+World.add_by(
+ColumnRow.Row,
+-2,
+-2,
+2
 )
 World.show()
 basic.forever(function () {
+    if (World.block_detect(World.xy_pos(XY.X), World.xy_pos(XY.Y))) {
+        World.destroy(World.xy_pos(XY.X), World.xy_pos(XY.Y))
+    }
     if (!(input.buttonIsPressed(Button.A)) && (input.buttonIsPressed(Button.B) && !(input.buttonIsPressed(Button.AB)))) {
-        if (!(World.block_detect(World.x_pos() + 1, World.y_pos()))) {
-            World.move("right", 1)
+        for (let index = 0; index < Math.floor(speed / 100); index++) {
+            if (World.block_detect(World.xy_pos(XY.X) + 1, World.xy_pos(XY.Y))) {
+                break
+            }
+            World.move(LeftRightUpDown.Right, 1)
+            led.plot(2, 2)
+            basic.pause(100)
         }
-        led.plot(2, 2)
         basic.pause(200)
     } else if (input.buttonIsPressed(Button.A) && !(input.buttonIsPressed(Button.B) || input.buttonIsPressed(Button.AB))) {
-        if (!(World.block_detect(World.x_pos() - 1, World.y_pos()))) {
-            World.move("left", 1)
+        for (let index = 0; index < Math.floor(speed / 100); index++) {
+            if (World.block_detect(World.xy_pos(XY.X) - 1, World.xy_pos(XY.Y))) {
+                break
+            }
+            World.move(LeftRightUpDown.Left, 1)
+            led.plot(2, 2)
+            basic.pause(100)
         }
-        led.plot(2, 2)
         basic.pause(200)
     }
+    basic.pause(50)
 })
 basic.forever(function () {
     if (input.buttonIsPressed(Button.AB)) {
-        if (World.block_detect(World.x_pos(), World.y_pos() + 1)) {
-            for (let index = 0; index < 2; index++) {
-                if (!(World.block_detect(World.x_pos(), World.y_pos() - 1))) {
-                    World.move("up", 1)
+        if (World.block_detect(World.xy_pos(XY.X), World.xy_pos(XY.Y) + 1)) {
+            for (let index = 0; index < Math.floor(jump / 50); index++) {
+                if (World.block_detect(World.xy_pos(XY.X), World.xy_pos(XY.Y) - 1)) {
+                    break
                 }
+                World.move(LeftRightUpDown.Up, 1)
                 led.plot(2, 2)
                 basic.pause(100)
             }
             basic.pause(100)
         }
     } 
-    if (!(World.block_detect(World.x_pos(), World.y_pos() + 1))) {
-        World.move("down", 1)
-        led.plot(2, 2)
-        basic.pause(10000-Math.map(gravity_effect, 0, 100, 0, 10000))
+    if (!(World.block_detect(World.xy_pos(XY.X), World.xy_pos(XY.Y) + 1))) {
+        for (let index = 0; index < Math.floor(gravity_effect / 100); index++) {
+            if (World.block_detect(World.xy_pos(XY.X), World.xy_pos(XY.Y) + 1)) {
+                break
+            }
+            World.move(LeftRightUpDown.Down, 1)
+            led.plot(2, 2)
+            basic.pause(100)
+            if (World.xy_pos(XY.Y) > 9999999) {
+                World.spawn()
+                break
+            }
+        }
     }
 })
 ```
