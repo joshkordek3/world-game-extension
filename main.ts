@@ -1,43 +1,43 @@
 enum LeftRightUpDown {
-//% block="Left"
-Left,
+    //% block="Left"
+    Left,
 
-//% block="Right"
-Right,
+    //% block="Right"
+    Right,
 
-//% block="Up"
-Up,
+    //% block="Up"
+    Up,
 
-//% block="Down"
-Down,
+    //% block="Down"
+    Down,
 }
 enum UpDown {
-//% block="Up"
-Up,
+    //% block="Up"
+    Up,
 
-//% block="Down"
-Down,
+    //% block="Down"
+    Down,
 }
 enum LeftRight {
-//% block="Left"
-Left,
+    //% block="Left"
+    Left,
 
-//% block="Right"
-Right,
+    //% block="Right"
+    Right,
 }
 enum ColumnRow {
-//% block="Column"
-Column,
+    //% block="Column"
+    Column,
 
-//% block="Row"
-Row,
+    //% block="Row"
+    Row,
 }
 enum XY {
-//% block="X"
-X,
+    //% block="X"
+    X,
 
-//% block="Y"
-Y,
+    //% block="Y"
+    Y,
 }
 enum FilledUn {
     //% block="Filled"
@@ -126,6 +126,7 @@ export function show () {
 //% block="add a circle at x: $x y: $y with a radius of $radius $filled"
 //% group="Creating & Destroying"
 //% radius.fieldOptions.precision=1
+//% inlineInputMode=inline
 /**
  * adds a circle
 */
@@ -141,6 +142,7 @@ export function add_circle (x: number, y: number, radius: number, filled: Filled
 //% block="destroy a circle at x: $x y: $y with a radius of $radius $filled"
 //% group="Creating & Destroying"
 //% radius.fieldOptions.precision=1
+//% inlineInputMode=inline
 /**
  * destroys a circle
 */
@@ -199,6 +201,7 @@ export function destroy_all() {
 //% block="add $details via $xy, at $at_xy"
 //% group="Creating & Destroying"
 //% details.defl="0000000000"
+//% inlineInputMode=inline
 /**
  * adds stuff led display style (post in issues on github if you do not understand)
 */
