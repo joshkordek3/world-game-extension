@@ -43,7 +43,6 @@ Y,
 namespace World {
 //% block="move $leftrightupdown by $steps"
 //% group="Moving"
-//% steps.min=0 steps.max=108
 /** 
  * moves what blocks you see in the direction you pick
 */
@@ -77,7 +76,6 @@ function not (bool: boolean) {
 }
 //% block="move %leftright and %updown by $steps"
 //% group="Moving"
-//% steps.min=0 steps.max=108
 /** 
  * self-explanatory
 */
