@@ -39,6 +39,13 @@ X,
 //% block="Y"
 Y,
 }
+enum FilledUn {
+    //% block="Filled"
+    Filled,
+
+    //% block="Unfilled"
+    Unfilled,
+}
 //% color=#088530 weight=50 icon="\uf11b" block="World"
 namespace World {
 //% block="move $leftrightupdown by $steps"
@@ -116,6 +123,36 @@ export function show () {
         led.plot(world_blocks(XY.X, index) + leftright_difference, world_blocks(XY.Y, index) + updown_difference)
     }
 }
+//% block="add a circle at x: $x y: $y with a radius of $radius $filled"
+//% group="Creating & Destroying"
+//% radius.fieldOptions.precision=1
+/**
+ * adds a circle
+*/
+export function add_circle (x: number, y: number, radius: number, filled: FilledUn) {
+    diam = (radius * 2) + 1
+    for(let i = 0; i < diam; i++) {
+        add_by(ColumnRow.Row, y + radius - i, 0 - radius + x, radius + x)
+    }
+    if (filled == FilledUn.Unfilled) {
+        destroy_circle(x, y, radius - 1, FilledUn.Filled)
+    }
+}
+//% block="destroy a circle at x: $x y: $y with a radius of $radius $filled"
+//% group="Creating & Destroying"
+//% radius.fieldOptions.precision=1
+/**
+ * destroys a circle
+*/
+export function destroy_circle (x: number, y: number, radius: number, filled: FilledUn) {
+    diam = (radius * 2) + 1
+    for(let i = 0; i < diam; i++) {
+        destroy_by(ColumnRow.Row, y + radius - i, 0 - radius + x, radius + x)
+    }
+    if (filled == FilledUn.Unfilled) {
+        add_circle(x, y, radius - 1, FilledUn.Filled)
+    }
+}
 //% block="$xy position"
 //% group="Position"
 /**
@@ -135,8 +172,8 @@ export function xy_pos (xy: XY) {
  * sets your spawn point to the position you are at
 */
 export function spawnpoint () {
-    spawn_x = xy_pos(1)
-    spawn_y = xy_pos(2)
+    spawn_x = xy_pos(XY.X)
+    spawn_y = xy_pos(XY.Y)
 }
 //% block="set spawnpoint to x: $x y: $y"
 //% group="Spawnpoint"
@@ -285,7 +322,7 @@ export function all_world_blocks () {
 /**
  * self-explanatory
 */
-export function destroy_by (columnrow: ColumnRow, from_xy: number, to_xy: number, xy: number) {
+export function destroy_by (columnrow: ColumnRow, xy: number, from_xy: number, to_xy: number) {
     if (columnrow == ColumnRow.Column) {
         for (let index2 = from_xy; index2 <= to_xy; index2++) {
             destroy(xy, index2)
@@ -305,7 +342,7 @@ export function destroy_by (columnrow: ColumnRow, from_xy: number, to_xy: number
 /**
  * self-explanatory
 */
-export function add_by (columnrow: ColumnRow, from_xy: number, to_xy: number, xy: number) {
+export function add_by (columnrow: ColumnRow, xy: number, from_xy: number, to_xy: number) {
     if (columnrow == ColumnRow.Column) {
         for (let index2 = from_xy; index2 <= to_xy; index2++) {
             add(xy, index2)
@@ -343,5 +380,6 @@ let leftright_difference = 0
 let spawn_x = 0
 let spawn_y = 0
 let edge_o_world: number[] = [-9, 99, -9, 99]
+let diam = 0
 goto(spawn_x, spawn_y)
 }
