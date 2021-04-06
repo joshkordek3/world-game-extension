@@ -46,6 +46,13 @@ enum FilledUn {
     //% block="Unfilled"
     Unfilled,
 }
+enum OneTwo {
+    //% block="one way"
+    OneWay,
+
+    //% block="two way"
+    TwoWay,
+}
 //% color=#088530 weight=50 icon="\uf11b" block="World"
 namespace World {
 //% block="move $leftrightupdown by $steps"
@@ -56,6 +63,10 @@ namespace World {
 export function move (leftrightupdown: LeftRightUpDown, steps: number) {
     for(let i = 0; i < steps; i++) {
         move_(leftrightupdown, 1)
+    }
+    if (not(disabled_portal == "")) {
+        portals_two_way.push(disabled_portal)
+        disabled_portal = ""
     }
     show()
 }
@@ -89,6 +100,10 @@ function not (bool: boolean) {
 export function move_diagonally (leftright: LeftRight, updown: UpDown, steps: number) {
     for(let i = 0; i < steps; i++) {
         move__diagonally(leftright, updown, 1)
+    }
+    if (not(disabled_portal == "")) {
+        portals_two_way.push(disabled_portal)
+        disabled_portal = ""
     }
     show()
 }
@@ -137,6 +152,19 @@ export function add_circle (x: number, y: number, radius: number, filled: Filled
     }
     if (filled == FilledUn.Unfilled) {
         destroy_circle(x, y, radius - 1, FilledUn.Filled)
+    }
+}
+//% block="add a portal at x: $x y: $y that goes to x: $tox y: $toy and is $_type"
+//% group="Creating & Destroying"
+//% inlineInputMode=inline
+/**
+ * adds a portal (note: this feature doesn't work for two-way portals yet)
+*/
+export function add_portal (x: number, y: number, tox: number, toy: number, _type: OneTwo) {
+    if (_type == OneTwo.OneWay) {
+        portals_one_way.push("" + encode(x) + encode(y) + encode(tox) + encode(toy))
+    } else if (_type == OneTwo.TwoWay) {
+        portals_two_way.push("" + encode(x) + encode(y) + encode(tox) + encode(toy))
     }
 }
 //% block="destroy a circle at x: $x y: $y with a radius of $radius $filled"
@@ -242,7 +270,7 @@ export function destroy (x: number, y: number) {
 //% x.min=-9 x.max=99
 //% y.min=-9 y.max=99
 /**
- * finds where the block is in the array (min=0)
+ * finds where the block is in the array
 */
 export function find (x: number, y: number) {
     return world.indexOf("" + encode(x) + encode(y))
@@ -254,6 +282,10 @@ export function find (x: number, y: number) {
 */
 export function spawn () {
     goto(spawn_x, spawn_y)
+    if (not(disabled_portal == "")) {
+        portals_two_way.push(disabled_portal)
+        disabled_portal = ""
+    }
 }
 //% block="go to x: $x y: $y"
 //% group="Position"
@@ -265,6 +297,10 @@ export function spawn () {
 export function goto (x: number, y: number) {
     updown_difference = 2 - y
     leftright_difference = 2 - x
+    if (not(disabled_portal == "")) {
+        portals_two_way.push(disabled_portal)
+        disabled_portal = ""
+    }
     show()
 }
 //% block="number of blocks in the world"
@@ -368,6 +404,32 @@ export function add (x: number, y: number) {
         world.push("" + encode(x) + encode(y))
     }
 }
+function decode (txt: string) {
+    return parseFloat(txt)
+}
+function c1 (txt: string) {
+    return decode(txt.substr(0, 2)) == xy_pos(XY.X) && decode(txt.substr(2, 2)) == xy_pos(XY.Y)
+}
+function c21 (txt: string) {
+    return decode(txt.substr(0, 2)) == xy_pos(XY.X) && decode(txt.substr(2, 2)) == xy_pos(XY.Y)
+}
+function c22 (txt: string) {
+    return decode(txt.substr(4, 2)) == xy_pos(XY.X) && decode(txt.substr(6, 2)) == xy_pos(XY.Y)
+}
+function do_ur_magic1 (txt: string) {
+    if (c1(txt)) {
+        goto(decode(txt.substr(4, 2)), decode(txt.substr(6, 2)))
+    }
+}
+function do_ur_magic2 (txt: string) {
+    if (c21(txt)) {
+        goto(decode(txt.substr(4, 2)), decode(txt.substr(6, 2)))
+    } else if (c22(txt)) {
+        goto(decode(txt.substr(0, 2)), decode(txt.substr(2, 2)))
+        disabled_portal = txt
+        portals_two_way.removeAt(portals_two_way.indexOf(txt))
+    }
+}
 function encode (oof: number) {
     temp_txt = convertToText(oof)
     for (let index4 = 0; index4 < 2 - temp_txt.length; index4++) {
@@ -375,9 +437,19 @@ function encode (oof: number) {
     }
     return temp_txt
 }
+basic.forever(function () {
+    for(let i = 0; i < portals_one_way.length; i++) {
+        do_ur_magic1(portals_one_way[i])
+    }
+    for(let i2 = 0; i2 < portals_two_way.length; i2++) {
+        do_ur_magic2(portals_two_way[i2])
+    }
+})
+let disabled_portal = ""
 let temp_txt = ""
 let world: string[] = []
-//let world2: boolean[][] = [[]];
+let portals_two_way: string[] = []
+let portals_one_way: string[] = []
 let updown_difference = 0
 let leftright_difference = 0
 let spawn_x = 0
