@@ -424,6 +424,8 @@ function do_ur_magic1 (txt: string) {
 function do_ur_magic2 (txt: string) {
     if (c21(txt)) {
         goto(decode(txt.substr(4, 2)), decode(txt.substr(6, 2)))
+        disabled_portal = txt
+        portals_two_way.removeAt(portals_two_way.indexOf(txt))
     } else if (c22(txt)) {
         goto(decode(txt.substr(0, 2)), decode(txt.substr(2, 2)))
         disabled_portal = txt
