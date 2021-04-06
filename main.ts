@@ -158,7 +158,7 @@ export function add_circle (x: number, y: number, radius: number, filled: Filled
 //% group="Creating & Destroying"
 //% inlineInputMode=inline
 /**
- * adds a portal (note: this feature doesn't work for two-way portals yet)
+ * adds a portal
 */
 export function add_portal (x: number, y: number, tox: number, toy: number, _type: OneTwo) {
     if (_type == OneTwo.OneWay) {
@@ -424,13 +424,11 @@ function do_ur_magic1 (txt: string) {
 function do_ur_magic2 (txt: string) {
     if (c21(txt)) {
         goto(decode(txt.substr(4, 2)), decode(txt.substr(6, 2)))
-        disabled_portal = txt
-        portals_two_way.removeAt(portals_two_way.indexOf(txt))
     } else if (c22(txt)) {
         goto(decode(txt.substr(0, 2)), decode(txt.substr(2, 2)))
-        disabled_portal = txt
-        portals_two_way.removeAt(portals_two_way.indexOf(txt))
     }
+    disabled_portal = txt
+    portals_two_way.removeAt(portals_two_way.indexOf(txt))
 }
 function encode (oof: number) {
     temp_txt = convertToText(oof)
