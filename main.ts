@@ -80,11 +80,11 @@ function move_ (leftrightupdown: LeftRightUpDown, steps: number) {
             leftright_difference += 0 - steps
         }
     } else if (leftrightupdown == LeftRightUpDown.Up) {
-        if (not(xy_pos(XY.Y) + steps > edge_o_world[3])) {
+        if (not(xy_pos(XY.Y) - steps < edge_o_world[2])) {
             updown_difference += steps
         }
     } else if (leftrightupdown == LeftRightUpDown.Down) {
-        if (not(xy_pos(XY.Y) - steps < edge_o_world[2])) {
+        if (not(xy_pos(XY.Y) + steps > edge_o_world[3])) {
             updown_difference += 0 - steps
         }
     }
@@ -335,13 +335,13 @@ export function world_blocks (xy: XY, place: number) {
     }  
     return -13
 }
-//% block="set edge of the world to minimum x: $min_x minimum y: $min_y maximum x: $max_x maximum y: $max_y"
+//% block="set edge of the world to minimum x: $min_x maximum x: $max_x minimum y: $min_y maximum y: $max_y"
 //% group="Position"
 //% inlineInputMode=inline
 /**
  * sets the edge of the world to points
 */
-export function edge (min_x: number, min_y: number, max_x: number, max_y: number) {
+export function edge (min_x: number, max_x: number, min_y: number, max_y: number) {
     edge_o_world = [min_x, max_x, min_y, max_y]
 }
 //% block="world (array)"
