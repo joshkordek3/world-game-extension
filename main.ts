@@ -146,12 +146,47 @@ export function show () {
  * adds a circle
 */
 export function add_circle (x: number, y: number, radius: number, filled: FilledUn) {
-    diam = (radius * 2) + 1
-    for(let i = 0; i < diam; i++) {
-        add_by(ColumnRow.Row, y + radius - i, 0 - radius + x, radius + x)
+    if (filled == FilledUn.Filled) {
+        diam = (radius * 2) + 1
+        for(let i = 0; i < diam; i++) {
+            add_by(ColumnRow.Row, y + radius - i, 0 - radius + x, radius + x)
+        }
+        return
     }
     if (filled == FilledUn.Unfilled) {
-        destroy_circle(x, y, radius - 1, FilledUn.Filled)
+        add_stuff(x, y, radius)
+    }
+}
+function add_stuff (x: number, y: number, radius: number) {
+    let diam_stuff = (radius * 2) + 1
+    let simple = diam_stuff - 2
+    for(let i = 0; i < diam_stuff; i++) {
+        add(radius + x - i, y + radius)
+    }
+    for(let i = 0; i < diam_stuff; i++) {
+        add(radius + x - i, y - radius)
+    }
+    for(let i = 0; i < simple; i++) {
+        add(x - radius, (y + i - simple) + radius)
+    }
+    for(let i = 0; i < simple; i++) {
+        add(x + radius, (y + i - simple) + radius)
+    }
+}
+function destroy_stuff (x: number, y: number, radius: number) {
+    let diam_stuff = (radius * 2) + 1
+    let simple = diam_stuff - 2
+    for(let i = 0; i < diam_stuff; i++) {
+        destroy(radius + x - i, y + radius)
+    }
+    for(let i = 0; i < diam_stuff; i++) {
+        destroy(radius + x - i, y - radius)
+    }
+    for(let i = 0; i < simple; i++) {
+        destroy(x - radius, (y + i - simple) + radius)
+    }
+    for(let i = 0; i < simple; i++) {
+        destroy(x + radius, (y + i - simple) + radius)
     }
 }
 //% block="add a portal at x: $x y: $y that goes to x: $tox y: $toy and is $_type"
@@ -175,12 +210,15 @@ export function add_portal (x: number, y: number, tox: number, toy: number, _typ
  * destroys a circle
 */
 export function destroy_circle (x: number, y: number, radius: number, filled: FilledUn) {
-    diam = (radius * 2) + 1
-    for(let i = 0; i < diam; i++) {
-        destroy_by(ColumnRow.Row, y + radius - i, 0 - radius + x, radius + x)
+    if (filled == FilledUn.Filled) {
+        diam = (radius * 2) + 1
+        for(let i = 0; i < diam; i++) {
+            destroy_by(ColumnRow.Row, y + radius - i, 0 - radius + x, radius + x)
+        }
+        return
     }
     if (filled == FilledUn.Unfilled) {
-        add_circle(x, y, radius - 1, FilledUn.Filled)
+        destroy_stuff(x, y, radius)
     }
 }
 //% block="$xy position"
@@ -426,6 +464,8 @@ function do_ur_magic2 (txt: string) {
         goto(decode(txt.substr(4, 2)), decode(txt.substr(6, 2)))
     } else if (c22(txt)) {
         goto(decode(txt.substr(0, 2)), decode(txt.substr(2, 2)))
+    } else {
+        return
     }
     disabled_portal = txt
     portals_two_way.removeAt(portals_two_way.indexOf(txt))
