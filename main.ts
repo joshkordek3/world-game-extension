@@ -202,6 +202,28 @@ export function add_portal (x: number, y: number, tox: number, toy: number, _typ
         portals_two_way.push("" + encode(x) + encode(y) + encode(tox) + encode(toy))
     }
 }
+//% block="set the world to $arr"
+//% group="Dangerous things that can mess up your world"
+//% inlineInputMode=inline
+/**
+ * sets the world to this array
+*/
+export function set_world (arr: string[]) {
+    world = arr
+}
+//% block="destroy the portal at x: $x y: $y that goes to x: $tox y: $toy and is $_type"
+//% group="Creating & Destroying"
+//% inlineInputMode=inline
+/**
+ * adds a portal
+*/
+export function destroy_portal (x: number, y: number, tox: number, toy: number, _type: OneTwo) {
+    if (_type == OneTwo.OneWay) {
+        portals_one_way.removeAt(portals_one_way.indexOf("" + encode(x) + encode(y) + encode(tox) + encode(toy)))
+    } else if (_type == OneTwo.TwoWay) {
+        portals_two_way.removeAt(portals_two_way.indexOf("" + encode(x) + encode(y) + encode(tox) + encode(toy)))
+    }
+}
 //% block="destroy a circle at x: $x y: $y with a radius of $radius $filled"
 //% group="Creating & Destroying"
 //% radius.fieldOptions.precision=1
